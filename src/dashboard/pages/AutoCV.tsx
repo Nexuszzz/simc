@@ -17,12 +17,12 @@ interface CVData {
   template?: string;
 }
 
-interface TemplateInfo { id: string; name: string; preview: string; }
+interface TemplateInfo { id: string; name: string; preview: string; color: string; }
 const templates: TemplateInfo[] = [
-  { id: 'modern', name: 'Modern', preview: 'https://example.com' },
-  { id: 'minimal', name: 'Minimal', preview: 'https://example.com' },
-  { id: 'creative', name: 'Kreatif', preview: 'https://example.com' },
-  { id: 'formal', name: 'Formal', preview: 'https://example.com' },
+  { id: 'modern', name: 'Modern', preview: '/placeholder-modern.jpg', color: 'from-blue-500 to-cyan-500' },
+  { id: 'minimal', name: 'Minimal', preview: '/placeholder-minimal.jpg', color: 'from-gray-400 to-gray-600' },
+  { id: 'creative', name: 'Kreatif', preview: '/placeholder-creative.jpg', color: 'from-purple-500 to-pink-500' },
+  { id: 'formal', name: 'Formal', preview: '/placeholder-formal.jpg', color: 'from-slate-700 to-slate-900' },
 ];
 
 const AutoCV: React.FC = () => {
@@ -306,8 +306,10 @@ const AutoCV: React.FC = () => {
               <h3 className="text-sm font-semibold text-gray-700 mb-1">Pilih Template</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {templates.map((tpl)=>(
-                  <button key={tpl.id} onClick={()=>setCvData(d=>({...d, template: tpl.id}))} className={`border-2 rounded-lg overflow-hidden group ${cvData.template===tpl.id?'border-primary-600 ring-2 ring-purple-200':'border-transparent hover:border-gray-300'}`}>
-                    <img src={tpl.preview} alt={tpl.name} className="w-full h-24 object-cover" />
+                  <button key={tpl.id} onClick={()=>setCvData(d=>({...d, template: tpl.id}))} className={`border-2 rounded-lg overflow-hidden group transition-all ${cvData.template===tpl.id?'border-primary-600 ring-2 ring-purple-200':'border-gray-200 hover:border-gray-300'}`}>
+                    <div className={`w-full h-24 bg-gradient-to-br ${tpl.color} flex items-center justify-center`}>
+                      <div className="text-white font-bold text-lg opacity-40">{tpl.name[0]}</div>
+                    </div>
                     <div className="text-xs py-1 bg-gray-50 text-gray-700 font-medium">{tpl.name}</div>
                   </button>
                 ))}
