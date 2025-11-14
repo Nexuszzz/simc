@@ -341,7 +341,25 @@ export default {
 export async function getInternships() {
   const db = await getDB('internships');
   await db.read();
-  return db.data.internships;
+  
+  // Get all internships with company data populated
+  const internships = db.data.internships;
+  const usersDb = await getDB('users');
+  await usersDb.read();
+  
+  // Join company data
+  return internships.map(internship => {
+    const company = usersDb.data.users.find(u => u.id === internship.companyId && u.role === 'company');
+    return {
+      ...internship,
+      company: company ? {
+        id: company.id,
+        name: company.companyName || company.name,
+        email: company.email
+      } : null,
+      companyName: company?.companyName || company?.name || 'Unknown Company'
+    };
+  });
 }
 
 export async function getInternshipById(id) {
